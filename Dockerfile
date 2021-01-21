@@ -6,4 +6,4 @@ ADD package.json /app/
 ADD template_config.json /app/
 WORKDIR /app
 RUN npm install
-ENTRYPOINT echo $CONFIG | base64 -d > /app/config.json && /bin/sh
+ENTRYPOINT /bin/sh
