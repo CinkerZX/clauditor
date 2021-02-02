@@ -1,12 +1,16 @@
 const cmdArgs = require('command-line-args')
 //const secureAmqp = require('../cllibsecureamqp')
-const secureAmqp = require('secureamqp')
+//const secureAmqp = require('secureamqp')
 
 const cmdOptions = [
 	{ name: 'send', alias: 's', type: String},
-	{ name: 'config', alias: 'c', type: String}
+	{ name: 'config', alias: 'c', type: String},
+	{ name: 'debug', type: Boolean}
 ]
 const options = cmdArgs(cmdOptions)
+
+const secureAmqp = (options.debug) ?  require('../cllibsecureamqp') : require('secureamqp')
+
 options.config = options.config || "./config"
 const config = require(options.config)
 const toAddress = options.send
@@ -21,9 +25,10 @@ async function main() {
 	
 	// Sign my Id by domain
 	secureAmqp.callFunction(config.domain, ".f.signActorId", myId, null, function(res) {
-		const token = res.msg
+		const token = res.msg.response
+		const status = res.msg.status
 		const verify = secureAmqp.verifyToken(token)
-		const decoded = secureAmqp.decodeToken(res.msg)
+		const decoded = secureAmqp.decodeToken(token)
 		if(verify) {
 			console.log("Received domain token: ", token)
 			domainToken = token
@@ -34,6 +39,14 @@ async function main() {
 	secureAmqp.subscribeEvent('*', function(e) { 
 		console.log("Received event: ", e)
 		// Do something
+	})
+
+	secureAmqp.monitorFunctions(function(m) {
+		console.log("Function: ",m)
+	})
+
+	secureAmqp.monitorEvents(function(m) {
+		console.log("Event: ",m)
 	})
 
 	// Sign requests
