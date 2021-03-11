@@ -1,6 +1,4 @@
 const cmdArgs = require('command-line-args')
-const SecureAmqp = require('../cllibsecureamqp').SecureAmqp
-const Actor = require('../cllibsecureamqp').Actor
 //const secureAmqp = require('secureamqp')
 
 const cmdOptions = [
@@ -10,7 +8,7 @@ const cmdOptions = [
 ]
 const options = cmdArgs(cmdOptions)
 
-const secureAmqp = (options.debug) ?  require('../cllibsecureamqp') : require('secureamqp')
+const Actor = (options.debug) ?  require('../cllibsecureamqp').Actor : require('secureamqp').Actor
 
 options.config = options.config || "./config"
 const config = require(options.config)
