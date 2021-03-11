@@ -2,7 +2,6 @@ const cmdArgs = require('command-line-args')
 //const secureAmqp = require('secureamqp')
 
 const cmdOptions = [
-	{ name: 'send', alias: 's', type: String},
 	{ name: 'config', alias: 'c', type: String},
 	{ name: 'debug', type: Boolean}
 ]
@@ -12,7 +11,6 @@ const Actor = (options.debug) ?  require('../cllibsecureamqp').Actor : require('
 
 options.config = options.config || "./config"
 const config = require(options.config)
-const toAddress = options.send
 let domainToken = null
 
 async function main() {
