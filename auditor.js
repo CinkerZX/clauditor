@@ -16,10 +16,10 @@ let domainToken = null
 async function main() {
 	const auditor = new Actor(config)
 	await auditor.boot()
-	auditor.listen("codeRed", function(event) {
+	auditor.listenToEvent("codeRed", function(event) {
 		console.log("Received event: ", event)
 	})
-	auditor.createAbility('sign', true, function(req, res) {
+	auditor.createAbility('sign', false, function(req, res) {
 		console.log("Auditor received signing request: ", req.msg)
 		// Do auditor magic
 
